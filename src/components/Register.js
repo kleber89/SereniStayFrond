@@ -1,55 +1,100 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
-  // Definimos el estado para el nombre de usuario, la contraseña y el correo electrónico
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [error, setError] = useState('');
 
-  // Función para manejar el envío del formulario
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Evita que la página se recargue
-    // Aquí puedes agregar la lógica para registrar al usuario
-    console.log('Nombre de usuario:', username);
-    console.log('Contraseña:', password);
-    console.log('Correo electrónico:', email);
-    // Resetear los campos después de enviar
-    setUsername('');
-    setPassword('');
-    setEmail('');
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError('');
+
+    // Validaciones básicas
+    if (formData.password !== formData.confirmPassword) {
+      setError('Las contraseñas no coinciden');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
+
+    // Crear objeto de usuario
+    const userData = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      createdAt: new Date().toISOString()
+    };
+
+    // Obtener usuarios existentes o inicializar array vacío
+    const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+
+    // Verificar si el email ya está registrado
+    if (existingUsers.some(user => user.email === userData.email)) {
+      setError('Este email ya está registrado');
+      return;
+    }
+
+    // Agregar nuevo usuario
+    existingUsers.push(userData);
+
+    // Guardar en localStorage
+    try {
+      localStorage.setItem('users', JSON.stringify(existingUsers));
+      alert('Registro exitoso! Por favor, inicia sesión.');
+      navigate('/login'); // Redirigir al login
+    } catch (error) {
+      setError('Error al guardar los datos');
+      console.error('Error saving data:', error);
+    }
   };
 
   return (
-    <div>
-      <h2>Registrarse</h2>
+    <div className="register-container">
+      <h2>Registro</h2>
+      {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Nombre de usuario:</label>
+        <div className="form-group">
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Nombre completo"
+            value={formData.name}
+            onChange={(e) => setFormData({...formData, name: e.target.value})}
             required
           />
         </div>
-        <div>
-          <label htmlFor="email">Correo electrónico:</label>
+        <div className="form-group">
           <input
             type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) => setFormData({...formData, email: e.target.value})}
             required
           />
         </div>
-        <div>
-          <label htmlFor="password">Contraseña:</label>
+        <div className="form-group">
           <input
             type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Contraseña"
+            value={formData.password}
+            onChange={(e) => setFormData({...formData, password: e.target.value})}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            placeholder="Confirmar contraseña"
+            value={formData.confirmPassword}
+            onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
             required
           />
         </div>
@@ -59,4 +104,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Register; 
