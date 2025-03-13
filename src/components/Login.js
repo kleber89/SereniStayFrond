@@ -1,62 +1,78 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  // Estados para almacenar los valores de usuario y contraseña
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Manejar el envío del formulario
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Evitar recargar la página
-
-    // Validación básica
-    if (!email || !password) {
-      setError('Todos los campos son obligatorios');
-      return;
-    }
-
-    // Aquí iría la lógica de autenticación (ejemplo: llamar a una API)
-    console.log('Iniciando sesión con:', email, password);
-    
-    // Limpiar el error en caso de éxito
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     setError('');
+
+    try {
+      // Simular un pequeño delay para mostrar el estado de carga
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Obtener usuarios del localStorage
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+      // Buscar usuario
+      const user = users.find(u => u.email === formData.email);
+
+      if (user && user.password === formData.password) {
+        // Guardar sesión del usuario
+        localStorage.setItem('currentUser', JSON.stringify({
+          name: user.name,
+          email: user.email
+        }));
+        
+        // Redirigir a la página de búsqueda de spas
+        navigate('/spa-search');
+      } else {
+        setError('Email o contraseña incorrectos');
+      }
+    } catch (error) {
+      setError('Error al iniciar sesión');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px', textAlign: 'center' }}>
+    <div className="login-container">
       <h2>Iniciar Sesión</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      
+      {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
+        <div className="form-group">
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) => setFormData({...formData, email: e.target.value})}
             required
-            style={{ width: '100%', padding: '8px', margin: '5px 0' }}
           />
         </div>
-        
-        <div>
-          <label>Contraseña:</label>
+        <div className="form-group">
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Contraseña"
+            value={formData.password}
+            onChange={(e) => setFormData({...formData, password: e.target.value})}
             required
-            style={{ width: '100%', padding: '8px', margin: '5px 0' }}
           />
         </div>
-
-        <button type="submit" style={{ padding: '10px', marginTop: '10px', cursor: 'pointer' }}>
-          Iniciar Sesión
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
         </button>
       </form>
     </div>
   );
 }
 
-export default Login;
+export default Login; 
