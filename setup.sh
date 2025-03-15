@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Actualizar paquetes
-sudo apt update && sudo apt upgrade -y
+apt update && apt upgrade -y
 
-# Instalar Git
-sudo apt install git -y
+# intalar curl y make
+apt install curl make -y
+
+#llamada a la pagina de node 
+curl -sL https://deb.nodesource.com/setup_20.x — Node.js 20 "Iron" | bash -
 
 # Instalar Node.js y npm
-sudo apt install nodejs npm -y
-
-# Instalar React Router DOM (si usas React)
-npm install react-router-dom
+apt-get install nodejs -y
 
 # instalar nginx
 apt install nginx -y
@@ -19,5 +19,8 @@ apt install nginx -y
 apt install ufw -y
 
 ufw allow 'Nginx HTTP'
+
+# Instalar React Router DOM (si usas React)
+npm install react-router-dom
 
 echo "✔️ Todo está listo! ✅"
