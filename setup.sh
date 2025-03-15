@@ -4,23 +4,43 @@
 apt update && apt upgrade -y
 
 # intalar curl y make
-apt install curl make -y
+apt install curl -y
 
-#llamada a la pagina de node 
-curl -sL https://deb.nodesource.com/setup_20.x — Node.js 20 "Iron" | bash -
+# Instalar Node.js 20
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+apt install nodejs -y
 
-# Instalar Node.js y npm
-apt-get install nodejs -y
+# Instalar Nginx y UFW (Firewall)
+apt install nginx ufw -y
 
-# instalar nginx
-apt install nginx -y
-
-#install ufw
-apt install ufw -y
-
+# Permitir tráfico HTTP en Nginx
 ufw allow 'Nginx HTTP'
 
-# Instalar React Router DOM (si usas React)
+# Instalar dependencias del proyecto
+npm install
+
+# Instalar React Router DOM
 npm install react-router-dom
+
+# Construir la aplicación React
+npm run build
+
+# Copiar la configuración de Nginx
+cp nginx.conf /etc/nginx/sites-available/react-app
+
+# Copiar archivos build al directorio de Nginx
+cp -r build/* /usr/share/nginx/html/
+
+# Cambiar permisos al directorio
+chown -R $USER:$USER /usr/share/nginx/html/
+
+# Descomentar la línea server_names_hash_bucket_size
+sed -i 's/#\s*server_names_hash_bucket_size/server_names_hash_bucket_size/' /etc/nginx/nginx.conf
+
+# Crear enlace simbólico
+ln -s /etc/nginx/sites-available/react-app /etc/nginx/sites-enabled/
+
+#inicio el servidor
+service nginx start
 
 echo "✔️ Todo está listo! ✅"
