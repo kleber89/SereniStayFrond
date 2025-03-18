@@ -40,7 +40,26 @@ sed -i 's/#\s*server_names_hash_bucket_size/server_names_hash_bucket_size/' /etc
 # Crear enlace simbólico
 ln -s /etc/nginx/sites-available/react-app /etc/nginx/sites-enabled/
 
-#inicio el servidor
+# --- CONFIGURAR DUCKDNS ---
+mkdir -p ~/duckdns && cd ~/duckdns
+
+# Crear el script de actualización de DuckDNS (REEMPLAZA TU TOKEN)
+echo 'echo url="https://www.duckdns.org/update?domains=serenistay&token=61f02490-1b1e-4b49-b0d3-f270e09f1d84&ip=" | curl -k -o ~/duckdns/duck.log -K -' > duck.sh
+
+chmod +x duck.sh
+
+# Agregar DuckDNS a crontab para actualizar la IP cada 5 minutos
+(crontab -l ; echo "*/5 * * * * ~/duckdns/duck.sh >/dev/null 2>&1") | crontab -
+
+# --- INSTALAR CERTIFICADO SSL ---
+apt-add-repository -r ppa:certbot/certbot
+apt-get update
+apt-get install python3-certbot-nginx -y
+
+# Generar certificado SSL automáticamente
+certbot --nginx --non-interactive --agree-tos -m smsalazar0319@gmail.com -d serenistay.duckdns.org
+
+# Iniciar Nginx
 service nginx start
 
 echo "✔️ Todo está listo! ✅"
