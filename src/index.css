@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+:root {
+    --beige-arena: #F5E4C3;
+    --verde-menta: #B2E6D4;
+    --verde-menta-oscuro: #6DA78C;
+    --texto-color: #4A4A4A;
+    --hover-color: #5F9C88;
+  }
 /* Estilos generales */
 * {
   margin: 0;
@@ -9,7 +16,7 @@
 
 body {
   font-family: 'Krona One', sans-serif;
-  background-color: #f5f5f5;
+  background-color: #F5E4C3;
 }
 
 .app {
@@ -27,7 +34,7 @@ body {
 }
 
 .nav-brand a {
-  color: #2193b0;
+  color: #B2E6D4;
   text-decoration: none;
   font-size: 1.5rem;
   font-weight: bold;
@@ -47,8 +54,8 @@ body {
 }
 
 .nav-links a:hover {
-  background-color: #f0f7f9;
-  color: #2193b0;
+  background-color: #F5E4C3;
+  color: #B2E6D4;
 }
 
 /* Búsqueda de Spas */
@@ -79,7 +86,7 @@ body {
 
 .search-input:focus {
   outline: none;
-  border-color: #2193b0;
+  border-color: #B2E6D4;
   box-shadow: 0 0 10px rgba(33, 147, 176, 0.2);
 }
 
@@ -105,13 +112,16 @@ body {
 
 .spa-image {
   position: relative;
-  height: 200px;
+  height: 250px;
+  overflow: hidden;
 }
 
 .spa-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
 }
 
 .spa-price {
@@ -122,7 +132,7 @@ body {
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-weight: bold;
-  color: #2193b0;
+  color: #B2E6D4;
 }
 
 .spa-info {
@@ -154,8 +164,8 @@ body {
 }
 
 .service-tag {
-  background: #f0f7f9;
-  color: #2193b0;
+  background: #F5E4C3;
+  color: #B2E6D4;
   padding: 0.25rem 0.75rem;
   border-radius: 15px;
   font-size: 0.85rem;
@@ -164,7 +174,7 @@ body {
 .book-button {
   width: 100%;
   padding: 0.75rem;
-  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  background: linear-gradient(45deg, #B2E6D4, #6dd5ed);
   color: white;
   border: none;
   border-radius: 25px;
@@ -229,7 +239,7 @@ button {
 /* Botón principal (para login y registro) */
 .login-container button,
 .register-container button {
-  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  background: linear-gradient(45deg, #B2E6D4, #6dd5ed);
   color: white;
   width: 100%;
   margin-top: 10px;
@@ -288,7 +298,7 @@ button:active::after {
 
 /* Animación de carga para los botones */
 button:disabled {
-  background: #cccccc;
+  background: #F5E4C3;
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -329,4 +339,9 @@ button:active {
   text-align: center;
   padding: 2rem;
   color: #dc3545;
+}
+
+/* Mejorar el efecto hover de las imágenes */
+.spa-card:hover .spa-image img {
+  transform: scale(1.05);
 } 

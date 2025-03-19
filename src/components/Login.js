@@ -1,26 +1,43 @@
 import React, { useState } from 'react';
 
 function Login() {
-  // Estados para almacenar los valores de usuario y contraseña
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // Manejar el envío del formulario
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Evitar recargar la página
-
-    // Validación básica
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
     if (!email || !password) {
       setError('Todos los campos son obligatorios');
       return;
     }
-
-    // Aquí iría la lógica de autenticación (ejemplo: llamar a una API)
-    console.log('Iniciando sesión con:', email, password);
     
-    // Limpiar el error en caso de éxito
+    setLoading(true);
     setError('');
+    
+    try {
+      const response = await fetch('https://localhost:8000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Error en la autenticación');
+      }
+      
+      console.log('Autenticación exitosa:', data);
+      alert('Inicio de sesión exitoso');
+      
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,8 +68,8 @@ function Login() {
           />
         </div>
 
-        <button type="submit" style={{ padding: '10px', marginTop: '10px', cursor: 'pointer' }}>
-          Iniciar Sesión
+        <button type="submit" style={{ padding: '10px', marginTop: '10px', cursor: 'pointer' }} disabled={loading}>
+          {loading ? 'Cargando...' : 'Iniciar Sesión'}
         </button>
       </form>
     </div>

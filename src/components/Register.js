@@ -4,56 +4,60 @@ import { useNavigate } from 'react-router-dom';
 function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: 'Cliente' // Cliente por defecto
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Validaciones básicas
     if (formData.password !== formData.confirmPassword) {
       setError('Las contraseñas no coinciden');
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres');
+    if (formData.password.length < 8) {
+      setError('La contraseña debe tener al menos 8 caracteres');
       return;
     }
 
-    // Crear objeto de usuario
-    const userData = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      createdAt: new Date().toISOString()
-    };
-
-    // Obtener usuarios existentes o inicializar array vacío
-    const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-
-    // Verificar si el email ya está registrado
-    if (existingUsers.some(user => user.email === userData.email)) {
-      setError('Este email ya está registrado');
-      return;
-    }
-
-    // Agregar nuevo usuario
-    existingUsers.push(userData);
-
-    // Guardar en localStorage
+    setLoading(true);
+    
     try {
-      localStorage.setItem('users', JSON.stringify(existingUsers));
-      alert('Registro exitoso! Por favor, inicia sesión.');
-      navigate('/login'); // Redirigir al login
+      const response = await fetch('http://localhost:8000/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          middleName: formData.middleName || '',
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Error en el registro');
+      }
+      
+      alert('Registro exitoso!');
+      navigate('/login');
+      
     } catch (error) {
-      setError('Error al guardar los datos');
-      console.error('Error saving data:', error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,9 +69,26 @@ function Register() {
         <div className="form-group">
           <input
             type="text"
-            placeholder="Nombre completo"
-            value={formData.name}
-            onChange={(e) => setFormData({...formData, name: e.target.value})}
+            placeholder="Primer Nombre"
+            value={formData.firstName}
+            onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Segundo Nombre (Opcional)"
+            value={formData.middleName}
+            onChange={(e) => setFormData({...formData, middleName: e.target.value})}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Apellido"
+            value={formData.lastName}
+            onChange={(e) => setFormData({...formData, lastName: e.target.value})}
             required
           />
         </div>
@@ -98,10 +119,22 @@ function Register() {
             required
           />
         </div>
-        <button type="submit">Registrarse</button>
+        <div className="form-group">
+          <label>Rol:</label>
+          <select
+            value={formData.role}
+            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+          >
+            <option value="Cliente">Cliente</option>
+            <option value="Anfitrión">Anfitrión</option>
+          </select>
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Registrando...' : 'Registrarse'}
+        </button>
       </form>
     </div>
   );
 }
 
-export default Register; 
+export default Register;

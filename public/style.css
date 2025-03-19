@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --beige-arena: #F5E4C3;
+    --verde-menta: #B2E6D4;
+    --verde-menta-oscuro: #6DA78C;
+    --texto-color: #4A4A4A;
+    --hover-color: #5F9C88;
+  }
+
+body {
+    background-color: #F5E4C3;
+}
+
+h1 {
+    color: black;
+    text-align: center;
+}
+
+noscript {
+    text-align: center;
+    text-size-adjust: 30rem;
+    color: #000;
+}
+
+h4 {
+    text-align: center;
+    color: #000;
+}
+
+p {
+    text-align: center;
+    text-size-adjust: 30px;
+    color: #000;
+}
+
+.navbar {
+    background: var(--beige-arena);
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-list {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav-list li {
+    padding: 10px;
+  }
+  
+  .nav-list a {
+    text-decoration: none;
+    color: var(--texto-color);
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+  
+  .nav-list a:hover {
+    color: var(--verde-menta);
+    background-color: rgba(138, 199, 164, 0.2);
+  }
+  
+  .active a {
+    color: var(--verde-menta-oscuro);
+    border-bottom: 3px solid var(--verde-menta-oscuro);
+  }
+  
+  .logout-button {
+    background: none;
+    border: none;
+    color: var(--verde-menta-oscuro);
+    font-weight: bold;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  }
+  
+  .logout-button:hover {
+    color: white;
+    background: var(--verde-menta-oscuro);
+  }
+
+  .home-container {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--beige-arena);
+    min-height: 100vh;
+  }
+  
+  .home-title {
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: var(--texto-color);
+  }
+  
+  .highlight {
+    color: var(--verde-menta);
+  }
+  
+  .home-subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 25px;
+    color: var(--texto-color);
+  }
+  
+  .loading-text {
+    font-size: 1.2rem;
+    color: var(--verde-menta-oscuro);
+  }
+  
+  .spa-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .search-results-container {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--beige-arena);
+    min-height: 100vh;
+  }
+  
+  .search-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: var(--texto-color);
+  }
+  
+  .loading-text, .no-results-text {
+    font-size: 1.2rem;
+    color: var(--verde-menta-oscuro);
+  }
+  
+  .spa-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
