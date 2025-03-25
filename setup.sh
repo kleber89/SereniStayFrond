@@ -49,6 +49,6 @@ apt install --reinstall python3-urllib3=1.26.5-1~exp1 python3-requests-toolbelt=
 
 apt install --reinstall python3-requests-toolbelt -y
 
-certbot --nginx -d web-80-194-157.cod-us-east-1.hbtn.io --non-interactive --agree-tos --email smsalazar0319@gmail.com
+certbot --nginx -d web-443-45-171.cod-us-east-1.hbtn.io --non-interactive --agree-tos --email smsalazar0319@gmail.com
 
 echo "✔️ Todo está listo! ✅"
