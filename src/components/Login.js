@@ -2,77 +2,70 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     setError('');
+    setLoading(true);
 
     try {
-      // Simular un pequeño delay para mostrar el estado de carga
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Obtener usuarios del localStorage
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const response = await fetch('http://127.0.0.1:4000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-      // Buscar usuario
-      const user = users.find(u => u.email === formData.email);
-
-      if (user && user.password === formData.password) {
-        // Guardar sesión del usuario
-        localStorage.setItem('currentUser', JSON.stringify({
-          name: user.name,
-          email: user.email
-        }));
-        
-        // Redirigir a la página de búsqueda de spas
-        navigate('/spa-search');
-      } else {
-        setError('Email o contraseña incorrectos');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Error al iniciar sesión');
       }
-    } catch (error) {
-      setError('Error al iniciar sesión');
+
+      const data = await response.json();
+      alert(data.message); // Muestra el mensaje del backend
+      navigate('/spa-search'); // Redirige al usuario después del inicio de sesión
+    } catch (err) {
+      setError(err.message);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login-container">
+    <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px', textAlign: 'center' }}>
       <h2>Iniciar Sesión</h2>
-      {error && <div className="error-message">{error}</div>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div>
+          <label>Email:</label>
           <input
             type="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
-        <div className="form-group">
+        <div>
+          <label>Contraseña:</label>
           <input
             type="password"
-            placeholder="Contraseña"
-            value={formData.password}
-            onChange={(e) => setFormData({...formData, password: e.target.value})}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+        <button type="submit" disabled={loading}>
+          {loading ? 'Cargando...' : 'Iniciar Sesión'}
         </button>
       </form>
     </div>
   );
 }
 
-export default Login; 
+export default Login;
