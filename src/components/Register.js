@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -14,24 +13,23 @@ function Register() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
     // Validaciones locales
     if (formData.password !== formData.confirmPassword) {
       setError('Las contraseñas no coinciden');
       return;
     }
-
     if (formData.password.length < 8) {
       setError('La contraseña debe tener al menos 8 caracteres');
       return;
     }
-
     setLoading(true);
-
+    const roleMapping = {
+      Cliente: "Client",
+      Anfitrión: "Owner",
+    };
     try {
       // Llamada al backend
       const response = await fetch('http://127.0.0.1:4000/register', {
@@ -41,19 +39,23 @@ function Register() {
         },
         body: JSON.stringify({
           first_name: formData.firstName,
-          middle_name: formData.middleName,
+          middle_name: formData.middleName || null,
           last_name: formData.lastName,
           email: formData.email,
           password: formData.password,
-          role: formData.role,
+          role: roleMapping[formData.role],
         }),
       });
-
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || 'Error al registrar el usuario');
+        let errorMessage = "Error al registrar el usuario";
+        if (Array.isArray(errorData.detail)) {
+          errorMessage = errorData.detail.map((err) => err.msg).join(", ");
+        } else if (typeof errorData.detail === "string") {
+          errorMessage = errorData.detail;
+        }
+        throw new Error(errorMessage);
       }
-
       const data = await response.json();
       alert(data.message || 'Registro exitoso!');
       navigate('/login'); // Redirige al usuario a la página de inicio de sesión
@@ -63,7 +65,6 @@ function Register() {
       setLoading(false);
     }
   };
-
   return (
     <div className="register-container">
       <h2>Registro</h2>
@@ -139,5 +140,6 @@ function Register() {
     </div>
   );
 }
-
 export default Register;
+
+
