@@ -40,9 +40,15 @@ sed -i 's/#\s*server_names_hash_bucket_size/server_names_hash_bucket_size/' /etc
 # Crear enlace simbólico
 ln -s /etc/nginx/sites-available/react-app /etc/nginx/sites-enabled/
 
-
-
 #inicio el servidor
 service nginx start
+
+apt install --reinstall python3-certbot-nginx python3-urllib3 python3-requests-toolbelt
+
+apt install --reinstall python3-urllib3=1.26.5-1~exp1 python3-requests-toolbelt=0.9.1-1
+
+apt install --reinstall python3-requests-toolbelt -y
+
+certbot --nginx -d web-80-194-157.cod-us-east-1.hbtn.io --non-interactive --agree-tos --email smsalazar0319@gmail.com
 
 echo "✔️ Todo está listo! ✅"
