@@ -14,12 +14,13 @@ function Login() {
     setLoading(true);
 
     try {
+      const formData = new FormData();
+      formData.append('username', email); // Cambiar 'email' por 'username'
+      formData.append('password', password);
+
       const response = await fetch('http://127.0.0.1:4000/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+        body: formData, // Enviar como FormData en lugar de JSON
       });
 
       if (!response.ok) {
@@ -28,7 +29,8 @@ function Login() {
       }
 
       const data = await response.json();
-      alert(data.message); // Muestra el mensaje del backend
+      alert('Inicio de sesión exitoso');
+      localStorage.setItem('token', data.access_token); // Guardar token si es necesario
       navigate('/spa-search'); // Redirige al usuario después del inicio de sesión
     } catch (err) {
       setError(err.message);
