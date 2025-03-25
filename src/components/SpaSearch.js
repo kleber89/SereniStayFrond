@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Datos de ejemplo
 const INITIAL_SPAS = [
@@ -24,6 +25,16 @@ const INITIAL_SPAS = [
   },
   {
     id: 3,
+    name: "Spa de la Montaña",
+    location: "Cartagena (Colombia)",
+    rating: 4.2,
+    price: "COP 120.000/hora",
+    description: "Relájate en nuestro spa con vista a la montaña",
+    imageUrl: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800",
+    services: ["Masajes", "Piscina climatizada", "Tratamientos corporales"]
+  },
+  {
+    id: 4,
     name: "Beauty Spa",
     location: "Monteria (Colombia)",
     rating: 4.2,
@@ -33,7 +44,7 @@ const INITIAL_SPAS = [
     services: ["Manicura", "Pedicura", "Tratamientos faciales"]
   },
   {
-    id: 4,
+    id: 5,
     name: "Spa Zen",
     location: "Cali (Colombia)",
     rating: 4.6,
@@ -43,7 +54,7 @@ const INITIAL_SPAS = [
     services: ["Masajes", "Yoga", "Sauna"]
   },
   {
-    id: 5,
+    id: 6,
     name: "Spa Naturaleza",
     location: "Cartagena (Colombia)",
     rating: 4.9,
@@ -52,21 +63,21 @@ const INITIAL_SPAS = [
     imageUrl: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800",
     services: ["Masajes", "Piscina climatizada", "Tratamientos faciales"]
   },
-  {
-    id: 6,
-    name: "Spa Elegance",
-    location: "Barranquilla (Colombia)",
-    rating: 4.3,
-    price: "COP 75.000/hora",
-    description: "Un toque de elegancia para tu bienestar",
-    imageUrl: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800",
-    services: ["Masajes", "Tratamientos faciales", "Yoga"]
-  },
 ];
 
 function SpaSearch() {
   const [searchTerm, setSearchTerm] = useState('');
   const [spas] = useState(INITIAL_SPAS);
+  const isLoggedIn = false; // Simula el estado de autenticación
+  const navigate = useNavigate(); // Para redirigir al usuario
+
+  const handleReserve = (spaName) => {
+    if (isLoggedIn) {
+      alert(`Has reservado una cita en ${spaName}!`);
+    } else {
+      navigate('/login'); // Redirige al login si no está logueado
+    }
+  };
 
   const filteredSpas = spas.filter(spa =>
     spa.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -109,7 +120,12 @@ function SpaSearch() {
                   <span key={index} className="service-tag">{service}</span>
                 ))}
               </div>
-              <button className="book-button">Reservar ahora</button>
+              <button 
+                className="book-button"
+                onClick={() => handleReserve(spa.name)}
+              >
+                {isLoggedIn ? "Reservar ahora" : "Reservar"}
+              </button>
             </div>
           </div>
         ))}
@@ -118,4 +134,4 @@ function SpaSearch() {
   );
 }
 
-export default SpaSearch; 
+export default SpaSearch;
