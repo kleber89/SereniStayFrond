@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#RESPONDER AUTOMATICO
+echo "tzdata tzdata/Areas select America" | debconf-set-selections
+echo "tzdata tzdata/Zones/America select Bogota" | debconf-set-selections
+
 # Actualizar paquetes
 apt update && apt upgrade -y
 
@@ -10,8 +14,11 @@ apt install curl -y
 curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 apt install nodejs -y
 
+echo "America/Bogota" > /etc/timezone
+ln -fs /usr/share/zoneinfo/America/Bogota /etc/localtime
+
 # Instalar Nginx y UFW (Firewall)
-apt install nginx ufw -y
+apt install nginx ufw tzdata -y
 
 # Permitir tráfico HTTP en Nginx
 ufw allow 'Nginx HTTP'
@@ -42,13 +49,5 @@ ln -s /etc/nginx/sites-available/react-app /etc/nginx/sites-enabled/
 
 #inicio el servidor
 service nginx start
-
-apt install --reinstall python3-certbot-nginx python3-urllib3 python3-requests-toolbelt
-
-apt install --reinstall python3-urllib3=1.26.5-1~exp1 python3-requests-toolbelt=0.9.1-1
-
-apt install --reinstall python3-requests-toolbelt -y
-
-certbot --nginx -d web-443-45-171.cod-us-east-1.hbtn.io --non-interactive --agree-tos --email smsalazar0319@gmail.com
 
 echo "✔️ Todo está listo! ✅"
