@@ -15,7 +15,7 @@ function MisReservas() {
         return;
       }
       try {
-        const response = await fetch('http://127.0.0.1:4000/create_booking', {
+        const response = await fetch(`${API_URL}/create_booking`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
