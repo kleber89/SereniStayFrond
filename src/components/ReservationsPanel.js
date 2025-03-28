@@ -13,7 +13,7 @@ function ReservationsPanel() {
           throw new Error("Usuario no autenticado. Por favor, inicie sesión.");
         }
 
-        const response = await fetch("http://127.0.0.1:4000/create_booking", {
+        const response = await fetch(`${API_URL}/create_booking`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
