@@ -1,9 +1,5 @@
 #!/bin/bash
 
-#RESPONDER AUTOMATICO
-echo "tzdata tzdata/Areas select America" | debconf-set-selections
-echo "tzdata tzdata/Zones/America select Bogota" | debconf-set-selections
-
 # Actualizar paquetes
 apt update && apt upgrade -y
 
@@ -14,11 +10,8 @@ apt install curl -y
 curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 apt install nodejs -y
 
-echo "America/Bogota" > /etc/timezone
-ln -fs /usr/share/zoneinfo/America/Bogota /etc/localtime
-
 # Instalar Nginx y UFW (Firewall)
-apt install nginx ufw tzdata -y
+apt install nginx ufw -y
 
 # Permitir tráfico HTTP en Nginx
 ufw allow 'Nginx HTTP'
