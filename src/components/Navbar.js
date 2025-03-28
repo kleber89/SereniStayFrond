@@ -26,8 +26,8 @@ function Navbar() {
       <div className="nav-links">
         {isAuthenticated ? (
           <>
-            <Link to="/reservations">Mis Reservas</Link>
-            <button onClick={handleLogout} className="logout-button">Cerrar Sesión</button>
+            <Link to="/reservations">My Reservations</Link>
+            <button onClick={handleLogout} className="logout-button">log out</button>
           </>
         ) : (
         <div className="dropdown-container">
@@ -61,7 +61,7 @@ function Navbar() {
                   onClick={() => setMenuOpen(false)}
                   className="menu-item"
                 >
-                  Iniciar Sesión
+                  Log In
                 </Link>
               </li>
               <li class="list">
@@ -70,7 +70,7 @@ function Navbar() {
                   onClick={() => setMenuOpen(false)}
                   className="menu-item"
                 >
-                  Registrarse
+                  Sign Up
                 </Link>
               </li>
             </ul>
