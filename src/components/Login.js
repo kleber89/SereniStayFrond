@@ -18,7 +18,7 @@ function Login() {
       formData.append('username', email); // Cambiar 'email' por 'username'
       formData.append('password', password);
 
-      const response = await fetch('http://127.0.0.1:4000/login', {
+      const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
         body: formData, // Enviar como FormData en lugar de JSON
       });
