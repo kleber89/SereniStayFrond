@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { isAuthenticated } from './auth';
 
 // Datos de ejemplo
 const INITIAL_SPAS = [
@@ -68,24 +69,32 @@ const INITIAL_SPAS = [
 function SpaSearch() {
   const [searchTerm, setSearchTerm] = useState('');
   const [spas] = useState(INITIAL_SPAS);
-  const isLoggedIn = false; // Simula el estado de autenticación
-  const navigate = useNavigate(); // Para redirigir al usuario
+  const navigate = useNavigate();
 
-  const handleReserve = (spaName) => {
-    if (isLoggedIn) {
-      alert(`Has reservado una cita en ${spaName}!`);
-    } else {
-      navigate('/login'); // Redirige al login si no está logueado
-    }
-  };
-
+  // Función para filtrar spas según el término de búsqueda
   const filteredSpas = spas.filter(spa =>
     spa.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     spa.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleReserve = (spaName) => {
+    console.log('Token actual:', localStorage.getItem('token')); // Debug
+    
+    if (!isAuthenticated()) {
+      console.log('Usuario no autenticado, redirigiendo...');
+      navigate('/login', {
+        state: { from: '/spa', message: 'Debes iniciar sesión para reservar' }
+      });
+      return;
+    }
+    
+    console.log('Usuario autenticado, procediendo con reserva...');
+    alert(`Reservando en ${spaName}`);
+  };
+
   return (
     <div className="spa-search">
+      {/* Barra de búsqueda */}
       <div className="search-header">
         <h2>Encuentra tu Spa Ideal</h2>
         <div className="search-bar">
@@ -99,6 +108,7 @@ function SpaSearch() {
         </div>
       </div>
 
+      {/* Listado de spas filtrados */}
       <div className="spa-grid">
         {filteredSpas.map(spa => (
           <div key={spa.id} className="spa-card">
@@ -124,7 +134,7 @@ function SpaSearch() {
                 className="book-button"
                 onClick={() => handleReserve(spa.name)}
               >
-                {isLoggedIn ? "Reservar ahora" : "Reservar"}
+                {isAuthenticated() ? "Reservar ahora" : "Reservar"}
               </button>
             </div>
           </div>
