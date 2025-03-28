@@ -20,6 +20,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="nav-brand">
+        <img src="/web-app-manifest-192x192.png" alt="Logo SereniStay" className="logo-circular"/>
         <Link to="/">SereniStay</Link>
       </div>
       <div className="nav-links">
@@ -29,17 +30,52 @@ function Navbar() {
             <button onClick={handleLogout} className="logout-button">Cerrar Sesión</button>
           </>
         ) : (
-          <div className="dropdown">
-            <button onClick={() => setMenuOpen(!menuOpen)} className="dropdown-button">
-              Acceder ▼
-            </button>
-            {menuOpen && (
-              <div className="dropdown-menu">
-                <Link to="/login">Iniciar Sesión</Link>
-                <Link to="/register">Registrarse</Link>
-              </div>
-            )}
-          </div>
+        <div className="dropdown-container">
+          {/* Botón del menú hamburguesa */}
+          <button 
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="menu-toggle"
+            aria-expanded={menuOpen}
+            aria-label="Menú de navegación"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fillRule="evenodd"
+                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+              />
+            </svg>
+          </button>
+
+          {/* Menú desplegable */}
+          {menuOpen && (
+            <ul className="dropdown-menu">
+              <li class="list">
+                <Link 
+                  to="/login" 
+                  onClick={() => setMenuOpen(false)}
+                  className="menu-item"
+                >
+                  Iniciar Sesión
+                </Link>
+              </li>
+              <li class="list">
+                <Link 
+                  to="/register" 
+                  onClick={() => setMenuOpen(false)}
+                  className="menu-item"
+                >
+                  Registrarse
+                </Link>
+              </li>
+            </ul>
+          )}
+        </div>
         )}
       </div>
     </nav>

@@ -40,30 +40,41 @@ function Login() {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px', textAlign: 'center' }}>
-      <h2>Iniciar Sesión</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
+    <div className="register-container">
+      <h1 className="register-title">SereniStay</h1>
+      <h2 className="register-subtitle">Login</h2>
+      
+      {error && <div className="error-message">{error}</div>}
+      
+      <form onSubmit={handleSubmit} className="register-form">
+        <div className="form-group">
+          <label className="form-label">Email:</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="form-input"
           />
         </div>
-        <div>
-          <label>Contraseña:</label>
+        
+        <div className="form-group">
+          <label className="form-label">Password:</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="form-input"
           />
         </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Cargando...' : 'Iniciar Sesión'}
+        
+        <button 
+          type="submit" 
+          className="register-button" 
+          disabled={loading}
+        >
+          {loading ? 'Loading...' : 'Login'}
         </button>
       </form>
     </div>

@@ -67,35 +67,46 @@ function Register() {
   };
   return (
     <div className="register-container">
-      <h2>Registro</h2>
-      {error && <div className="error-message" style={{ color: 'red' }}>{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Primer Nombre"
-            value={formData.firstName}
-            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-            required
-          />
+      <h1 className="register-title">SereniStay</h1>
+      <h2 className="register-subtitle">Registration</h2>
+      
+      {error && <div className="error-message">{error}</div>}
+      
+      <form onSubmit={handleSubmit} className="register-form">
+        <div className="form-row">
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="First Name"
+              value={formData.firstName}
+              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+              required
+              className="form-input"
+            />
+          </div>
+          
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Middle Name (Optional)"
+              value={formData.middleName}
+              onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
+              className="form-input"
+            />
+          </div>
         </div>
+        
         <div className="form-group">
           <input
             type="text"
-            placeholder="Segundo Nombre (Opcional)"
-            value={formData.middleName}
-            onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Apellido"
+            placeholder="Last Name"
             value={formData.lastName}
             onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
             required
+            className="form-input"
           />
         </div>
+        
         <div className="form-group">
           <input
             type="email"
@@ -103,38 +114,48 @@ function Register() {
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
+            className="form-input"
           />
         </div>
-        <div className="form-group">
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={formData.password}
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            required
-          />
+        
+        <div className="form-row">
+          <div className="form-group">
+            <input
+              type="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              required
+              className="form-input"
+            />
+          </div>
+          
+          <div className="form-group">
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+              required
+              className="form-input"
+            />
+          </div>
         </div>
-        <div className="form-group">
-          <input
-            type="password"
-            placeholder="Confirmar contraseña"
-            value={formData.confirmPassword}
-            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Rol:</label>
+        
+        <div className="form-group role-selector">
+          <label className="role-label">Role:</label>
           <select
             value={formData.role}
             onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+            className="role-select"
           >
-            <option value="Cliente">Cliente</option>
-            <option value="Anfitrión">Anfitrión</option>
+            <option value="Client">Client</option>
+            <option value="Host">Owner</option>
           </select>
         </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Registrando...' : 'Registrarse'}
+        
+        <button type="submit" className="register-button" disabled={loading}>
+          {loading ? 'Registering...' : 'Register'}
         </button>
       </form>
     </div>
